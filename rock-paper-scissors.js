@@ -16,6 +16,74 @@ if (!score)
     };
 }
 */
+
+let isAutoPlaying = false;
+let intervalId;
+
+function autoPlay()
+{
+    if (!isAutoPlaying)
+    {
+        intervalId = setInterval(() =>
+            {
+                const playerMove = pickComputerMove();
+                playGame(playerMove);
+            },
+            1000    /* 1 second */ )
+            isAutoPlaying = true;
+    }
+    else
+    {
+        clearInterval(intervalId);
+        isAutoPlaying = false;
+    }
+}
+
+document.querySelector('.js-rock-btn')
+    .addEventListener('click', () =>
+    {
+        playGame('rock');
+    });
+document.querySelector('.js-paper-btn')
+    .addEventListener('click', () =>
+    {
+        playGame('paper');
+    });
+document.querySelector('.js-scissors-btn')
+    .addEventListener('click', () =>
+    {
+        playGame('scissors');
+    });
+document.querySelector('.js-reset-score-btn')
+    .addEventListener('click', () =>
+    {
+            score.wins = 0;
+            score.losses = 0;
+            score.ties = 0;
+            localStorage.removeItem('score');
+            updateScoreElement();
+    });
+document.querySelector('.js-auto-play-btn')
+    .addEventListener('click', () =>
+    {
+        autoPlay();
+    });
+document.body.addEventListener('keydown', (event) =>
+    {
+        if (event.key === 'r')
+        {
+            playGame('rock');
+        }
+        else if (event.key === 'p')
+        {
+            playGame('paper');
+        }
+        else if (event.key === 's')
+        {
+            playGame('scissors');
+        }
+    });
+
 function playGame(playerMove)
 {
     const computerMove=pickComputerMove();
